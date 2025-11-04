@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: hello-k8s
-          image: grundner/hello-k8s:latest
+          image: ghcr.io/grundner/hello-k8s:latest
           ports:
             - containerPort: 8080
