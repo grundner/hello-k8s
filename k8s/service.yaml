@@ -1,12 +1,24 @@
+# Die Version der Kubernetes Core API
 apiVersion: v1
+# Definiert, dass dies ein Service-Objekt ist (interne Lastverteilung und Service-Discovery)
 kind: Service
+# Metadaten des Services
 metadata:
+  # Name des Services
   name: hello-k8s
+  # Namespace, in dem der Service erstellt wird
   namespace: hello-k8s
+# Spezifikation des Services
 spec:
+  # Wählt die Pods aus, die zu diesem Service gehören
   selector:
+    # Pods mit dem Label app=hello-k8s werden angesprochen
     app: hello-k8s
+  # Definition der Ports
   ports:
+    # Port-Konfiguration
     - port: 8080
+      # Der Port im Pod, an den der Traffic weitergeleitet wird
       targetPort: 8080
+  # Typ des Services (ClusterIP = nur intern im Cluster erreichbar)
   type: ClusterIP

@@ -1,20 +1,51 @@
+# Die Version der Kubernetes API für Deployments
 apiVersion: apps/v1
+# Definiert, dass dies ein Deployment-Objekt ist (verwaltet die Pods der Anwendung)
 kind: Deployment
+# Metadaten des Deployments
 metadata:
+  # Name des Deployments
   name: hello-k8s
+  # Namespace, in dem das Deployment erstellt wird
   namespace: hello-k8s
+# Spezifikation des Deployments
 spec:
+  # Anzahl der gewünschten Replikate (Pod-Instanzen)
   replicas: 1
+  # Definiert, welche Pods zu diesem Deployment gehören
   selector:
     matchLabels:
+      # Pods mit diesem Label gehören zum Deployment
       app: hello-k8s
+  # Vorlage für die zu erstellenden Pods
   template:
     metadata:
+      # Labels, die den Pods zugewiesen werden
       labels:
         app: hello-k8s
+    # Spezifikation der Pods
     spec:
+      # Liste der Container im Pod
       containers:
+        # Definition des Anwendungs-Containers
         - name: hello-k8s
+          # Das zu verwendende Container-Image
           image: ghcr.io/grundner/hello-k8s:latest
+          # Ports, die der Container exponiert
           ports:
+            # Der Container hört auf Port 8080
             - containerPort: 8080
+          # Liveness Probe - prüft, ob die Anwendung noch läuft
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          # Readiness Probe - prüft, ob die Anwendung bereit ist, Verkehr zu empfangen
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10

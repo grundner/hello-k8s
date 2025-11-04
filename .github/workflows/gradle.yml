@@ -1,0 +1,47 @@
+name: Java CI with Gradle
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'corretto'
+
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2
+
+    - name: Run Tests
+      run: ./gradlew test --no-daemon
+
+    - name: Build with Gradle
+      run: ./gradlew build --no-daemon
+
+    - name: Build and push Docker image
+      # Nur weitermachen, wenn Tests und Build erfolgreich waren
+      if: success()
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: ghcr.io/${{ github.repository }}:latest
+
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: always()  # Auch bei Fehlern ausführen
+      with:
+        name: JUnit Tests
+        path: build/test-results/test/*.xml
+        reporter: java-junit
+        fail-on-error: true

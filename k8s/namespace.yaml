@@ -1,4 +1,8 @@
+# Die Version der Kubernetes Core API
 apiVersion: v1
+# Definiert, dass dies ein Namespace-Objekt ist (logische Gruppierung von Ressourcen)
 kind: Namespace
+# Metadaten des Namespace
 metadata:
+  # Name des Namespace
   name: hello-k8s

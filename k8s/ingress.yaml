@@ -1,17 +1,33 @@
+# Die Version der Kubernetes Networking API, die wir verwenden
 apiVersion: networking.k8s.io/v1
+# Definiert, dass dies ein Ingress-Objekt ist (zuständig für externen Zugriff auf den Cluster)
 kind: Ingress
+# Metadaten des Ingress-Objekts
 metadata:
+  # Der Name des Ingress-Objekts im Cluster
   name: hello-k8s
+  # Der Kubernetes Namespace, in dem der Ingress erstellt wird
   namespace: hello-k8s
+# Die eigentliche Spezifikation des Ingress
 spec:
+  # Regeln für das Routing des eingehenden Traffics
   rules:
+    # Die Domain, unter der die Anwendung erreichbar sein soll
     - host: hello-k8s-dev.grundner.io
+      # HTTP-Routing-Konfiguration
       http:
+        # Liste der Pfade und deren Weiterleitungen
         paths:
+          # Konfiguration für einen einzelnen Pfad
           - path: /
+            # Prefix bedeutet, dass alle Pfade, die mit "/" beginnen, weitergeleitet werden
             pathType: Prefix
+            # Definition, wohin der Traffic weitergeleitet werden soll
             backend:
+              # Der Kubernetes Service, an den weitergeleitet wird
               service:
+                # Name des Services, der die Anfragen erhält
                 name: hello-k8s
+                # Port des Services, an den die Anfragen gesendet werden
                 port:
                   number: 8080
