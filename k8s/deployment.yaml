@@ -38,14 +38,14 @@ spec:
           # Liveness Probe - prüft, ob die Anwendung noch läuft
           livenessProbe:
             httpGet:
-              path: /actuator/health/liveness
+              path: /health/liveness
               port: 8080
             initialDelaySeconds: 30
             periodSeconds: 10
           # Readiness Probe - prüft, ob die Anwendung bereit ist, Verkehr zu empfangen
           readinessProbe:
             httpGet:
-              path: /actuator/health/readiness
+              path: /health/readiness
               port: 8080
             initialDelaySeconds: 30
             periodSeconds: 10
